@@ -51,35 +51,14 @@ void print_board(Board board) {
     puts("  a b c d e f g h\n");
 }
 
-uint8_t get_bit(uint64_t bitboard, uint8_t bit_number) {
-    if(bitboard & (1ULL << bit_number)) {
-        return 0;
-    } else {
-        return 1;
-    }
-}
 
-void set_bit(uint64_t bitboard, uint8_t bit_number) {
-    bitboard = bitboard | (1ULL << bit_number);
-}
-
-void clear_bit(uint64_t bitboard, uint8_t bit_number) {
-    bitboard = bitboard & ~(1ULL << bit_number);
-}
-
-int get_lsb(uint64_t bitboard)
-{
-    return __builtin_ctzll(bitboard);
-}
-
-void move(Board board, Color color, Piece piece, uint8_t from, uint8_t to) {
-    uint64_t bitboard = board.bitboards[color][piece];
-    clear_bit(bitboard, from);
-    set_bit(bitboard, to);
-    bitboard = board.all_pieces[color];
-    clear_bit(bitboard, from);
-    set_bit(bitboard, to);
-    bitboard = board.all_pieces[ALL];
-    clear_bit(bitboard, from);
-    set_bit(bitboard, to);
+void move(Board *board, Color color, Piece piece, uint8_t from, uint8_t to) {
+    board->bitboards[color][piece] = clear_bit(board->bitboards[color][piece], from);
+    board->bitboards[color][piece] = set_bit(board->bitboards[color][piece], to);
+    
+    board->all_pieces[color] = clear_bit(board->all_pieces[color], from);
+    board->all_pieces[color] = set_bit(board->all_pieces[color], to);
+    
+    board->all_pieces[ALL] = clear_bit(board->all_pieces[ALL], from);
+    board->all_pieces[ALL] = set_bit(board->all_pieces[ALL], to);
 }

@@ -1,9 +1,9 @@
-#include "board.h"
+#include "position.h"
 
 
 int main() {
-    Board board = board_init();
-    board_print(board);
+    Position pos = position_init();
+    board_print(pos.board);
 
     return 0;
 }

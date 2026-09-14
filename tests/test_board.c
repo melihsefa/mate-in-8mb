@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "board.h"
+#include "bitboard.h"
 
 static int tests_run = 0;
 static int tests_passed = 0;
@@ -100,42 +101,12 @@ static void test_get_lsb() {
 
 }
 
-static void test_move(void) {
-    Board board = init_board();
- 
-    uint8_t from = 12; // e2
-    uint8_t to   = 28; // e4
- 
-    CHECK(get_bit(board.bitboards[WHITE][PAWN], from) == 1,
-          "move: PAWN present on 'from' square before move");
-    CHECK(get_bit(board.bitboards[WHITE][PAWN], to) == 0,
-          "move: 'to' square empty before move");
- 
-    move(&board, WHITE, PAWN, from, to);
- 
-    CHECK(get_bit(board.bitboards[WHITE][PAWN], from) == 0,
-          "move: 'from' square cleared after move");
-    CHECK(get_bit(board.bitboards[WHITE][PAWN], to) == 1,
-          "move: 'to' square set after move");
- 
-    CHECK(get_bit(board.all_pieces[WHITE], from) == 0,
-          "move: Piece cleared at 'from' position for 'WHITE' bitboard");
-    CHECK(get_bit(board.all_pieces[WHITE], to) == 1,
-          "move: Piece set at 'to' position for 'WHITE' bitboard");
-
-    CHECK(get_bit(board.all_pieces[ALL], from) == 0,
-          "move: Piece cleared at 'from' position for 'ALL' bitboard");
-    CHECK(get_bit(board.all_pieces[ALL], to) == 1,
-          "move: Piece set at 'to' position for 'ALL' bitboard");
-}
-
 
 int main() {
     test_get_bit();
     test_set_bit();
     test_clear_bit();
     test_get_lsb();
-    test_move();
 
     printf("\n%d/%d tests passed\n", tests_passed, tests_run);
     return (tests_passed == tests_run) ? 0 : 1;

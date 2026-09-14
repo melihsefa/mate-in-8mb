@@ -22,71 +22,33 @@ Board init_board() {
 }
 
 void print_board(Board board) {
-    char board_rep[65];
-    for(int i = 0; i < 64; i++) {
-        if(board.bitboards[WHITE][PAWN] & (1ULL << i)) {
-            board_rep[i] = 'P';
-            continue;
-        }
-        if(board.bitboards[BLACK][PAWN] & (1ULL << i)) {
-            board_rep[i] = 'p';
-            continue;
-        }
-        if(board.bitboards[WHITE][ROOK] & (1ULL << i)) {
-            board_rep[i] = 'R';
-            continue;
-        }
-        if(board.bitboards[BLACK][ROOK] & (1ULL << i)) {
-            board_rep[i] = 'r';
-            continue;
-        }
-        if(board.bitboards[WHITE][BISHOP] & (1ULL << i)) {
-            board_rep[i] = 'B';
-            continue;
-        }
-        if(board.bitboards[BLACK][BISHOP] & (1ULL << i)) {
-            board_rep[i] = 'b';
-            continue;
-        }
-        if(board.bitboards[WHITE][KNIGHT] & (1ULL << i)) {
-            board_rep[i] = 'N';
-            continue;
-        }
-        if(board.bitboards[BLACK][KNIGHT] & (1ULL << i)) {
-            board_rep[i] = 'n';
-            continue;
-        }
-        if(board.bitboards[WHITE][QUEEN] & (1ULL << i)) {
-            board_rep[i] = 'Q';
-            continue;
-        }
-        if(board.bitboards[BLACK][QUEEN] & (1ULL << i)) {
-            board_rep[i] = 'q';
-            continue;
-        }        
-        if(board.bitboards[WHITE][KING] & (1ULL << i)) {
-            board_rep[i] = 'K';
-            continue;
-        }
-        if(board.bitboards[BLACK][KING] & (1ULL << i)) {
-            board_rep[i] = 'k';
-            continue;
-        }
-        board_rep[i] = ' ';
-    }
-    board_rep[64] = '\0';
-    
-
-    // print rank 8 down to rank 1 (LERF: square = rank*8 + file, a1=0)
     for (int rank = 7; rank >= 0; rank--) {
-        printf("%d ", rank + 1);
+        putchar((rank + 1) + '0');
+        putchar(' ');
+
         for (int file = 0; file < 8; file++) {
             int square = rank * 8 + file;
-            printf("%c ", board_rep[square]);
+            char piece = ' ';
+            if(board.bitboards[WHITE][PAWN] & (1ULL << square)) piece = 'P';
+            else if(board.bitboards[BLACK][PAWN] & (1ULL << square)) piece = 'p';
+            else if(board.bitboards[WHITE][ROOK] & (1ULL << square)) piece = 'R';
+            else if(board.bitboards[BLACK][ROOK] & (1ULL << square)) piece = 'r';
+            else if(board.bitboards[WHITE][BISHOP] & (1ULL << square)) piece = 'B';
+            else if(board.bitboards[BLACK][BISHOP] & (1ULL << square)) piece = 'b';
+            else if(board.bitboards[WHITE][KNIGHT] & (1ULL << square)) piece = 'N';
+            else if(board.bitboards[BLACK][KNIGHT] & (1ULL << square)) piece = 'n';
+            else if(board.bitboards[WHITE][QUEEN] & (1ULL << square)) piece = 'Q';
+            else if(board.bitboards[BLACK][QUEEN] & (1ULL << square)) piece = 'q';    
+            else if(board.bitboards[WHITE][KING] & (1ULL << square)) piece = 'K';
+            else if(board.bitboards[BLACK][KING] & (1ULL << square)) piece = 'k';
+            else piece = '-';
+            
+            putchar(piece);
+            putchar(' ');
         }
-        printf("\n");
+        putchar('\n');
     }
-    printf("  a b c d e f g h\n");
+    puts("  a b c d e f g h\n");
 }
 
 uint8_t get_bit(uint64_t bitboard, uint8_t bit_number) {

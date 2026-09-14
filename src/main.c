@@ -1,10 +1,9 @@
-#include <board.h>
-
+#include "board.h"
 
 
 int main() {
-    Board board = init_board();
-    print_board(board);
+    Board board = board_init();
+    board_print(board);
 
     return 0;
 }

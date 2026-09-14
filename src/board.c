@@ -1,6 +1,7 @@
-#include <board.h>
+#include "board.h"
+#include "types.h"
 
-Board init_board() {
+Board board_init() {
     Board board;
     board.bitboards[WHITE][PAWN] = 0x000000000000FF00; 
     board.bitboards[BLACK][PAWN] = 0x00FF000000000000;
@@ -21,7 +22,7 @@ Board init_board() {
     return board;
 }
 
-void print_board(Board board) {
+void board_print(Board board) {
     for (int rank = 7; rank >= 0; rank--) {
         putchar((rank + 1) + '0');
         putchar(' ');
@@ -49,16 +50,4 @@ void print_board(Board board) {
         putchar('\n');
     }
     puts("  a b c d e f g h\n");
-}
-
-
-void move(Board *board, Color color, Piece piece, uint8_t from, uint8_t to) {
-    board->bitboards[color][piece] = clear_bit(board->bitboards[color][piece], from);
-    board->bitboards[color][piece] = set_bit(board->bitboards[color][piece], to);
-    
-    board->all_pieces[color] = clear_bit(board->all_pieces[color], from);
-    board->all_pieces[color] = set_bit(board->all_pieces[color], to);
-    
-    board->all_pieces[ALL] = clear_bit(board->all_pieces[ALL], from);
-    board->all_pieces[ALL] = set_bit(board->all_pieces[ALL], to);
 }
